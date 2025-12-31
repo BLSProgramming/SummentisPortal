@@ -39,7 +39,7 @@ function DevAccountManager() {
       headerName: 'Permission Set',
       width: 240,
       cellRenderer: (params) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 pt-2">
           {['T1','T2','T3'].map((label) => (
             <label key={label} className="flex items-center gap-1 text-slate-300">
               <input
