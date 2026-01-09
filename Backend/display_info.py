@@ -2,6 +2,7 @@ from flask import jsonify, Blueprint, session
 from db_connection_summentis import get_db_connection
 from dotenv import load_dotenv
 
+
 # Creates blueprints for sign up and login page
 display_info_blueprint = Blueprint("display_info", __name__)
 
@@ -20,7 +21,7 @@ def view_user_info():
         cursor.execute("""
         SELECT id, email, created_at, last_login, status, permission_set
         FROM users
-        WHERE user_id = %(user_id)s
+        WHERE id = %(user_id)s
         """, {
 
             'user_id': user_id
@@ -38,6 +39,7 @@ def view_user_info():
                 "permission_set": row[5]
             }
             all_info.append(user_info)
+        print(all_info)
     except Exception as e:
         print("Error: ", e)
         return jsonify({"error": str(e)}), 500
@@ -45,4 +47,4 @@ def view_user_info():
         cursor.close()
         connection.close()
 
-    return jsonify({"transactions": all_info})
+    return jsonify({"all_info": all_info})
