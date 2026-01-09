@@ -2,6 +2,7 @@ from flask import jsonify, Blueprint, session
 from db_connection_summentis import get_db_connection
 from dotenv import load_dotenv
 
+
 # Creates blueprints for sign up and login page
 display_info_blueprint = Blueprint("display_info", __name__)
 
