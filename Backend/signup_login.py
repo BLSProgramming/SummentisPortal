@@ -13,7 +13,7 @@ def check_password(password, hashed_password):
 @signup_routes.route('/api/login', methods=["POST"])
 def login():
     try:
-        data = request.get_json(force=True)
+        data = request.get_json()
         email = data.get("email")
         password = data.get("password")
 
@@ -27,13 +27,15 @@ def login():
             SELECT id, password
             FROM users
             WHERE email = %(email)s
-        """, {"email": email})
+            """,
+                {"email": email})
 
         row = cursor.fetchone()
         if not row:
             return jsonify({"error": "Invalid email or password"}), 401
 
-        user_id, stored_hash = row
+        user_id = row[0]
+        stored_hash = row[1]
 
         if isinstance(stored_hash, str):
             stored_hash = stored_hash.encode("utf-8")
