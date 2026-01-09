@@ -108,6 +108,7 @@ function DevAccountManager() {
         const response = await fetch('/api/accounts', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
         })
 
         if (!response.ok) {
@@ -120,11 +121,37 @@ function DevAccountManager() {
         }
 
         const data = await response.json()
-        const list = Array.isArray(data) ? data : (data.accounts || [])
-        setAccounts(list.map(acc => ({
-          ...acc,
-          permissions: acc.permissions || { T1: false, T2: false, T3: false }
-        })))
+        
+        // Backend returns {all_info: [...]} format
+        const list = Array.isArray(data) ? data : (data.accounts || data.all_info || [])
+        
+        // Map backend snake_case fields to frontend camelCase
+        const normalizedAccounts = list.map(acc => {
+          // Parse permission_set if it's a string
+          let permissions = { T1: false, T2: false, T3: false }
+          if (acc.permission_set) {
+            try {
+              permissions = typeof acc.permission_set === 'string' 
+                ? JSON.parse(acc.permission_set) 
+                : acc.permission_set
+            } catch (e) {
+              console.warn('Failed to parse permission_set:', e)
+            }
+          } else if (acc.permissions) {
+            permissions = acc.permissions
+          }
+          
+          return {
+            id: acc.id,
+            email: acc.email,
+            createdAt: acc.createdAt || acc.created_at,
+            lastLogin: acc.lastLogin || acc.last_login,
+            status: acc.status || 'active',
+            permissions
+          }
+        })
+        
+        setAccounts(normalizedAccounts)
       } catch (err) {
         console.error('Fetch error:', err)
         // Fallback to mock data for development

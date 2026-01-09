@@ -9,7 +9,7 @@ dev_acct_signup_routes = Blueprint("dev_acct_signup", __name__)
 def password_hash(password):
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-# Checks login password hash with stored password hash
+
 def check_password(password, hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
