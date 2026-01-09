@@ -21,11 +21,7 @@ def view_user_info():
         cursor.execute("""
         SELECT id, email, created_at, last_login, status, permission_set
         FROM users
-        WHERE id = %(user_id)s
-        """, {
-
-            'user_id': user_id
-        })
+        """)
 
         rows = cursor.fetchall()
         all_info = []
