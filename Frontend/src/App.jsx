@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import PortalDashboard from './pages/PortalDashboard'
 import DevAccountManager from './pages/DevAccountManager'
 import Threadwork from './pages/Threadwork'
+import AuthWrapper from './Components/AuthWrapper'
 
 function App() {
   return (
@@ -13,9 +14,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<PortalDashboard />} />
-          <Route path="/account-manager" element={<DevAccountManager />} />
-          <Route path="/threadwork" element={<Threadwork />} />
+          <Route path="/dashboard" element={<AuthWrapper><PortalDashboard /></AuthWrapper>} />
+          <Route path="/account-manager" element={<AuthWrapper><DevAccountManager /></AuthWrapper>} />
+          <Route path="/threadwork" element={<AuthWrapper><Threadwork /></AuthWrapper>} />
         </Routes>
       </Layout>
     </Router>

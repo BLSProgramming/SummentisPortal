@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
+	const navigate = useNavigate()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -25,7 +27,14 @@ function Login() {
 				throw new Error(data?.message || 'Login failed')
 			}
 
+			// Set authenticated in localStorage
+			localStorage.setItem('isAuthenticated', 'true')
+			localStorage.setItem('user', JSON.stringify({ email }))
+			
 			console.log('Login success', data)
+			
+			// Redirect to dashboard
+			navigate('/dashboard')
 		} catch (err) {
 			setError(err.message || 'Login failed')
 		} finally {
