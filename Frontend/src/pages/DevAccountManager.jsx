@@ -18,7 +18,7 @@ function DevAccountManager() {
   const [actionLoading, setActionLoading] = useState(null)
   const [confirmDialog, setConfirmDialog] = useState({ open: false, action: null, accountId: null, email: null })
 
-  const DEFAULT_PASSWORD = 'ChangeP@sswordNow!!!'
+  const DEFAULT_PASSWORD = import.meta.env.VITE_DEFAULT_PASSWORD
 
   // Column definitions for ag-grid
   const colDefs = [
@@ -247,6 +247,7 @@ function DevAccountManager() {
       const response = await fetch(endpoint, {
         method,
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: method !== 'DELETE' ? JSON.stringify(body) : undefined,
       })
 
@@ -298,6 +299,7 @@ function DevAccountManager() {
       const response = await fetch(`/api/accounts/${accountId}/permissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ permissions: updatedPermissions })
       })
       if (!response.ok) {

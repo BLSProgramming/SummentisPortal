@@ -1,12 +1,19 @@
 import { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi'
 import { MdDashboard, MdPeople, MdSettings, MdHelp } from 'react-icons/md'
 import { SiThreads } from 'react-icons/si'
 import { SidebarContext } from '../../Layout'
 
 function ProjectNavbar() {
+  const navigate = useNavigate()
   const { isCollapsed, setIsCollapsed } = useContext(SidebarContext)
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('userEmail')
+    navigate('/login')
+  }
 
   const navItems = [
     { label: 'Threadwork', href: '/threadwork', Icon: SiThreads },
@@ -64,7 +71,18 @@ function ProjectNavbar() {
       </nav>
 
       {/* Footer */}
-      <div className="absolute bottom-4 left-4 right-4">
+      <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-3">
+        <button
+          onClick={handleLogout}
+          className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${
+            isCollapsed
+              ? 'hidden'
+              : 'bg-red-600/30 text-red-300 hover:bg-red-600/50 hover:text-white'
+          }`}
+          aria-label="Log out"
+        >
+          Log Out
+        </button>
         <div className={`text-xs text-slate-500 text-center ${isCollapsed ? 'hidden' : ''}`}>
           v1.0.0
         </div>
