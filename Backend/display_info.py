@@ -122,13 +122,12 @@ def update_permission(account_id):
 
     permissions = data['permissions']
 
-    # Find enabled permission
-    enabled = [k for k, v in permissions.items() if v is True]
+    enabled = [k for k, v in permissions.items() if v]
 
-    if len(enabled) != 1:
-        return jsonify({'error': 'Exactly one permission must be enabled'}), 400
+    if not enabled:
+        return jsonify({'error': 'No permission enabled'}), 400
 
-    permission = enabled[0]  # e.g. "T1"
+    permission = enabled[-1]  # last clicked wins
 
     conn = get_db_connection()
     cur = conn.cursor()
